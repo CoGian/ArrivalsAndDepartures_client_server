@@ -1,6 +1,7 @@
 import java.text.*;
 import java.util.Date;
 
+//Simple class for flights 
 public class Flight {
 
 	private int code ;// the code of flight
