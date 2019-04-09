@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
-public class ServerThread {
+public class ServerThread extends Thread{
 	
 	private Socket dataSocket;
 	private InputStream is;
@@ -10,7 +10,7 @@ public class ServerThread {
    	private PrintWriter out;
    	private ConcurrentHashMap<Integer,Flight> tableOfArrivals_Departures ; 
 
-   	public ServerThread(Socket socket,ConcurrentHashMap  map)
+   	public ServerThread(Socket socket,ConcurrentHashMap  map) 
    	{
       		dataSocket = socket;
       		try {
@@ -36,6 +36,7 @@ public class ServerThread {
 			while (!outmsg.equals("EXIT")) {
 				out.println(outmsg);
 				inmsg = in.readLine();
+				System.out.println(inmsg);
 				outmsg = app.processRequest(inmsg);		
 			}	
 			dataSocket.close();	

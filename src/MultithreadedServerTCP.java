@@ -19,8 +19,8 @@ public class MultithreadedServerTCP {
 			Socket dataSocket = connectionSocket.accept();
 			System.out.println("Received request from " + dataSocket.getInetAddress());
 
-			//ServerThread sthread = new ServerThread(dataSocket);
-			//sthread.start();
+			ServerThread sthread = new ServerThread(dataSocket,tableOfArrivals_Departures);
+			sthread.start();
 		}
 
 	}
