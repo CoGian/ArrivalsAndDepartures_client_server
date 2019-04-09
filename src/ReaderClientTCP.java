@@ -1,10 +1,11 @@
 import java.net.*;
 import java.io.*;
+
 public class ReaderClientTCP {
 	private static final String HOST = "localhost";
 	private static final int PORT = 1234;
 		
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 		// TODO Auto-generated method stub
 					
 
@@ -18,20 +19,16 @@ public class ReaderClientTCP {
 		String inmsg, outmsg;
 		ClientProtocol app = new ClientProtocol();
 				
-				int iters = 100;
-				for (int i = 0; i < iters; i++)  {
-				        outmsg = app.prepareRequest();
-					out.println(outmsg);
-					inmsg = in.readLine();
-					app.processReply(inmsg);
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) { }
-				}
-				outmsg = app.prepareExit();
-				out.println(outmsg);
 				
-				dataSocket.close();
+		outmsg = app.prepareRequest();
+		out.println(outmsg);
+		inmsg = in.readLine();
+		app.processReply(inmsg);
+					
+		outmsg = app.prepareExit();
+		out.println(outmsg);
+				
+		dataSocket.close();
 			
 	}
 }
