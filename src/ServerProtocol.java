@@ -13,14 +13,16 @@ public class ServerProtocol {
 	 
 		
 			String [] arrOfStr = theInput.split(" "); // temporary array of strings to put strings of input message after splitting them 
+			System.out.println(theInput);
 			String order = arrOfStr[0] ; // order of client WRITE or READ 
 			
-			if (order.equals("WRITE")) {
+			if (order.equals("WRITE")) { //writer client
 				
 				int code = 	Integer.parseInt(arrOfStr[1]) ;// code of flight which will be added in map
 				String state = arrOfStr[2]; // state of flight which will be added in map
 				String time = arrOfStr[3] ; // time  of flight which will be added in map
 				
+
 				Flight newFlight = new Flight(code, state, time) ; //create new flight object 
 				
 				try {
@@ -30,7 +32,7 @@ public class ServerProtocol {
 					if (oldFlight == null )
 						return "WOK" ;
 					else
-						return  "WOK : THIS FLIGHT WAS OVERWRITTEN (" +  oldFlight.getCode() + ' ' + oldFlight.getState() + ' '
+						return  "WOK : THIS FLIGHT WAS ALTERED OLD INFO: (" +  oldFlight.getCode() + ' ' + oldFlight.getState() + ' '
 						                        + oldFlight.getTime() + ')' ; 
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -38,7 +40,18 @@ public class ServerProtocol {
 				}
 				
 			}
-			else if (order.equals("READ"))	{
+			else if (order.equals("DELETE")) {
+				int code = 	Integer.parseInt(arrOfStr[1]) ;// code of flight which will be deleted from map
+				
+				Flight oldFlight = tableOfArrivals_Departures.remove(code) ; 
+				
+				if (oldFlight == null)
+					return "WERR : Flight " + code +" wasn't found" ;
+				else 
+					return "WOK" ;
+				
+			}
+			else if (order.equals("READ"))	{ //reader client
 				
 				int code = 	Integer.parseInt(arrOfStr[1]) ;// code of flight which will be searched in map
 				
@@ -50,11 +63,11 @@ public class ServerProtocol {
 				else
 					return "ROK " + f.getCode() + ' ' + f.getState() + ' ' + f.getTime()  ; 
 			}
-			else if (theInput.equals("EXIT"))
+			else if (theInput.equals("EXIT")) //prompt to exit of client 
 				return "EXIT" ;
 			else 
-				return "Wrong Format please type : WRITE <Flight's code> <State> <Time> if you are a writer "
-						+ "or READ <Flight's code> if you a reader" ; 
+				return "Wrong Format please type: 'WRITE/DELETE <Flight's code> <State> <Time>' if you are a writer "
+						+ "or 'READ <Flight's code>' if you are a reader'." ; 
 			
 						
 	        

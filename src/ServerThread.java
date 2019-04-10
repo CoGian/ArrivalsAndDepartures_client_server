@@ -30,14 +30,17 @@ public class ServerThread extends Thread{
    		String inmsg, outmsg;
 		
 		try {
-			inmsg = in.readLine();
+			inmsg = in.readLine(); //read a line from buffer reader
 			ServerProtocol app = new ServerProtocol(tableOfArrivals_Departures);
-			outmsg = app.processRequest(inmsg);
-			while (!outmsg.equals("EXIT")) {
+			outmsg = app.processRequest(inmsg); 
+			
+			while (!outmsg.equals("EXIT")) { //keep reading while EXIT was not sent by client 
 				out.println(outmsg);
 				inmsg = in.readLine();
 				outmsg = app.processRequest(inmsg);		
-			}	
+			}
+			
+			System.out.println("A client has left");
 			dataSocket.close();	
 
 		} catch (IOException e)	{		

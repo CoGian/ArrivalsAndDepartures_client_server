@@ -1,26 +1,19 @@
 import java.text.*;
-import java.util.Date;
 
 //Simple class for flights 
 public class Flight {
 
 	private int code ;// the code of flight
 	private String state ; //arrival or departure
-	private Date time ; // time of arrival or departure 
-	private DateFormat sdf = new SimpleDateFormat("HH:mm");
+	private String time ; // time of arrival or departure 
+
 	
 	public Flight(int code, String state, String time) {
 		
 		this.code = code;
 		this.state = state;
+		this.time = time ; 
 		
-		//formatting time from string to date 
-		try {
-			this.time = sdf.parse(time);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 
@@ -32,7 +25,7 @@ public class Flight {
 		return state;
 	}
 
-	public Date getTime() {
+	public String getTime() {
 		return time;
 	}
 	
