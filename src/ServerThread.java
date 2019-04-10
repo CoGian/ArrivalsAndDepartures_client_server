@@ -10,7 +10,7 @@ public class ServerThread extends Thread{
    	private PrintWriter out;
    	private ConcurrentHashMap<Integer,Flight> tableOfArrivals_Departures ; 
 
-   	public ServerThread(Socket socket,ConcurrentHashMap  map) 
+   	public ServerThread(Socket socket,ConcurrentHashMap<Integer, Flight>  map) 
    	{
       		dataSocket = socket;
       		try {
@@ -36,7 +36,6 @@ public class ServerThread extends Thread{
 			while (!outmsg.equals("EXIT")) {
 				out.println(outmsg);
 				inmsg = in.readLine();
-				System.out.println(inmsg);
 				outmsg = app.processRequest(inmsg);		
 			}	
 			dataSocket.close();	

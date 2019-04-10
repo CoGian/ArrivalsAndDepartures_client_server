@@ -3,7 +3,7 @@ import java.io.*;
 
 public class ReaderClientTCP {
 	private static final String HOST = "localhost";
-	private static final int PORT = 1234;
+	private static final int PORT = 1398;
 		
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		// TODO Auto-generated method stub

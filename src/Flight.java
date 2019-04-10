@@ -14,6 +14,7 @@ public class Flight {
 		this.code = code;
 		this.state = state;
 		
+		//formatting time from string to date 
 		try {
 			this.time = sdf.parse(time);
 		} catch (ParseException e) {
@@ -26,6 +27,15 @@ public class Flight {
 	public int getCode() {
 		return code;
 	}
+
+	public String getState() {
+		return state;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+	
 	
 	
 	
