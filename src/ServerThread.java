@@ -8,9 +8,9 @@ public class ServerThread extends Thread{
    	private BufferedReader in;
 	private OutputStream os;
    	private PrintWriter out;
-   	private ConcurrentHashMap<Integer,Flight> tableOfArrivals_Departures ; 
+   	private ConcurrentHashMap<String,Flight> tableOfArrivals_Departures ; 
 
-   	public ServerThread(Socket socket,ConcurrentHashMap<Integer, Flight>  map) 
+   	public ServerThread(Socket socket,ConcurrentHashMap<String, Flight>  map) 
    	{
       		dataSocket = socket;
       		try {

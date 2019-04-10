@@ -1,4 +1,4 @@
-import java.net.*;
+
 import java.util.Scanner;
 import java.io.*;
 public class ClientProtocol {
@@ -11,14 +11,14 @@ public class ClientProtocol {
  			System.out.print("Input> ");
  	 		Scanner scanner = new Scanner(System.in); // scanner to read from a client
  	 		theOutput = scanner.nextLine();
- 	 		if((theOutput.contains("WRITE") || theOutput.contains("DELETE")) && client.equals("WRITER")) // check the order accordingly the client  
- 	 			break;
- 	 		else if (theOutput.contains("READ") && client.equals("READER"))
- 	 			break; 
- 	 		else if (theOutput.equals("EXIT"))
+ 	 		if((theOutput.contains("WRITE") || theOutput.contains("DELETE")) && !client.equals("WRITER")) // check the order accordingly the client  
+ 	 			System.out.println("You are not allowed to write/delete beacause you are a " + client + "! Please type an other order."); 
+ 	 		else if (theOutput.contains("READER") && !client.equals("READER"))
+ 	 			System.out.println("You are not allowed to read because you are a " + client + "! Please type an other order."); 
+ 	 		else 
  	 			break ;
  	 			
- 	 		System.out.println("You are not allowed to do this action because you are a " + client + "! Please type an other order.");	
+ 	 			
  	 		
  		}
  		

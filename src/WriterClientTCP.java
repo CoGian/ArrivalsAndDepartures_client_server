@@ -51,7 +51,7 @@ public class WriterClientTCP {
 				app.processReply(inmsg);
 			}
 		}	
-		catch(IOException e0) {
+		catch(IOException WERR) {
 			System.out.println("WERR") ;
 		}
 				
