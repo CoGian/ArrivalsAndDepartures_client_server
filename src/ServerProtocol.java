@@ -58,11 +58,24 @@ public class ServerProtocol {
 				Lock writelock = flights_on_processing.get(code).writeLock() ; 
 				
 					try {
+						
 						writelock.lock(); // if flight doesn't exist here we will have null exception
+						System.out.println("A thread has taken write lock on " + code);
 						String state = arrOfStr[2]; // state of flight which will be altered in map
-						String time = arrOfStr[3] ; // time  of flight which will be altered in map
+						String time = null ;
+						if (arrOfStr.length == 4)						
+							 time = arrOfStr[3] ; // time  of flight which will be altered in map
+						
+						if (state.toLowerCase().equals("arrival") || state.toLowerCase().equals("departure")) {
+							if (time == null )
+								time = tableOfArrivals_Departures.get(code).getTime() ; 
+						}else
+						{
+							time = state; 
+							state =  tableOfArrivals_Departures.get(code).getState() ;
+						}
 						System.out.println("Going to sleep");
-						Thread.sleep(10000);
+						Thread.sleep(1000);
 						Flight newFlight = new Flight(code, state, time) ; //create new flight object 
 						
 						tableOfArrivals_Departures.replace(code, newFlight) ;// replace previous flight's info 
@@ -71,6 +84,8 @@ public class ServerProtocol {
 					}finally {
 						writelock.unlock();
 					}
+					
+					
 				}
 				catch (Exception e) {
 					// TODO: handle exception

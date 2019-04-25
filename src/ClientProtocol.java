@@ -13,7 +13,7 @@ public class ClientProtocol {
  	 		theOutput = scanner.nextLine();
  	 		if((theOutput.contains("WRITE") || theOutput.contains("DELETE") || theOutput.contains("ALTER")) && !client.equals("WRITER")) // check the order accordingly the client  
  	 			System.out.println("You are not allowed to write/delete/alter beacause you are a " + client + "! Please type an other order."); 
- 	 		else if (theOutput.contains("READER") && !client.equals("READER"))
+ 	 		else if (theOutput.contains("READ") && !client.equals("READER"))
  	 			System.out.println("You are not allowed to read because you are a " + client + "! Please type an other order."); 
  	 		else 
  	 			break ;
