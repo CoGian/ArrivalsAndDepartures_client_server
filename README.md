@@ -1,14 +1,29 @@
 # ArrivalsAndDepartures_client_server
 
-Simultaneous Read and Write operations by Multiple Threads on same or different segments of ConcurrentHashMap
-Read/Get Operation :- Two Threads T1 and T2 can read data from same or different segment of ConcurrentHashMap at the same time without blocking each other.
+Demonstrates the use of multithreading , ReadWrite Locks and Sockets to help writers and readers to write , alter , delete and read a flight's info from a server using TCP connection.  
 
-Write/Put/Remove Operation :- Two Threads T1 and T2 can write data on different segment at the same time without blocking the other.
+### Usage 
 
-But Two threads can’t write data on same segments at the same time. One has to wait for other to complete the operation.
+To start server type in cmd : 
+``` 
+java MultithreadedServerTCP 
+```
 
-Read-Write Operation :- Two threads can read and write data on different segments at the same time without blocking each other. 
+To start a client writer type in cmd : 
+```
+java WriterClientTCP
+```
+
+To start a client reader type in cmd : 
+```
+java ReaderClientTCP
+```
 
 
-In general, Retrieval operations do not block, so may overlap with write (put/remove) operations.
- Latest updated value will be returned by get operation which is most recently updated value by write operation (including put/remove).
+###### Server : prompts for connections,orders and if a thread is going to sleep or has taken a lock.
+###### Writer Client : can write a new flight,alter or delete an existing flight.
+   To write type : ``` WRITE <Flight's code> <State> <Time>  ```
+        
+   To alter type : ``` ALTER <Flight's code> <new_State> <new_time>  ```
+   
+   To delete type : ```DELETE <Flight's code>```
