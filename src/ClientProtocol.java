@@ -34,9 +34,9 @@ public class ClientProtocol {
  		return theOutput;
     }
 
-    public void processReply(String theInput) throws IOException {
+    public void processReply(String theInput, Float sec) throws IOException {
 
-    	System.out.println("Reply: " + theInput);
+    	System.out.println("Reply: " + theInput +  " received in " + sec + " sec");
     }
 
 }

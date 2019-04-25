@@ -11,7 +11,7 @@ public class ServerThread extends Thread{
 	private OutputStream os;
    	private PrintWriter out;
    	private ConcurrentHashMap<String,Flight> tableOfArrivals_Departures ; 
-   	private HashMap<String, ReadWriteLock> flights_on_processing;
+   	private HashMap<String, ReadWriteLock> flights_on_processing; // a map of readwrite locks , evrey lock represents a flight  
    	
    	public ServerThread(Socket socket,ConcurrentHashMap<String, Flight>  map,HashMap<String, ReadWriteLock> flights_on_processing ) 
    	{

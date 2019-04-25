@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.*;
@@ -20,7 +21,6 @@ public class ServerProtocol {
 	 
 		
 			String [] arrOfStr = theInput.split(" "); // temporary array of strings to put strings of input message after splitting them 
-			System.out.println("Order: " + theInput);
 			String order = arrOfStr[0] ; // order of client WRITE ,DELETE or READ 
 			
 			if (order.equals("WRITE")) { //writer client
@@ -29,26 +29,33 @@ public class ServerProtocol {
 				try {
 					// check if flight existed
 					Lock writelock = flights_on_processing.get(code).writeLock() ; // if flight doesn't exist here we will have null exception
+						
+					return "WERR : Flight " + code + " already in table" ; 
+													
+				}catch (Exception e) {// if exception caught then flight doesn't exist
+					// TODO: handle exception
+					ReadWriteLock lock = new ReentrantReadWriteLock() ; // create a lock 
+					flights_on_processing.put(code, lock); // put lock in hashmap
+					Lock writelock = flights_on_processing.get(code).writeLock() ; 
 					try {
-						writelock.lock(); 
-						return "WERR : Flight " + code + " already in table" ; 
+						
+						writelock.lock();
+						System.out.println("A writer has taken write lock on " + code + " " + Instant.now());
+						String state = arrOfStr[2]; // state of flight which will be added in map
+						String time = arrOfStr[3] ; // time  of flight which will be added in map
+											
+						
+						Flight newFlight = new Flight(code, state, time) ; //create new flight object 
+						
+											
+						tableOfArrivals_Departures.put(code, newFlight); //add new flight in map 
+						
+						return "WOKK" ;
+						
 					}finally {
+						System.out.println("A writer has let write lock on " + code + " " + Instant.now());
 						writelock.unlock();
 					}
-										
-				}catch (Exception e) {
-					// TODO: handle exception
-					//no need to lock because flight doesn't exist  
-					String state = arrOfStr[2]; // state of flight which will be added in map
-					String time = arrOfStr[3] ; // time  of flight which will be added in map
-										
-					
-					Flight newFlight = new Flight(code, state, time) ; //create new flight object 
-					ReadWriteLock lock = new ReentrantReadWriteLock() ; 
-										
-					tableOfArrivals_Departures.put(code, newFlight); //add new flight in map 
-					flights_on_processing.putIfAbsent(code, lock);
-					return "WOKK" ;
 				}
 								
 			}
@@ -60,9 +67,11 @@ public class ServerProtocol {
 					try {
 						
 						writelock.lock(); // if flight doesn't exist here we will have null exception
-						System.out.println("A thread has taken write lock on " + code);
+						System.out.println("A writer has taken write lock on " + code + " " + Instant.now());
 						String state = arrOfStr[2]; // state of flight which will be altered in map
 						String time = null ;
+						
+						// check if arguments are correct 
 						if (arrOfStr.length == 4)						
 							 time = arrOfStr[3] ; // time  of flight which will be altered in map
 						
@@ -74,14 +83,17 @@ public class ServerProtocol {
 							time = state; 
 							state =  tableOfArrivals_Departures.get(code).getState() ;
 						}
-						System.out.println("Going to sleep");
-						Thread.sleep(1000);
+						
+						System.out.println("A writer with write lock on ("+ code + ") is going to sleep " + Instant.now());
+						Thread.sleep(30000);
+						System.out.println("A writer with write lock on ("+ code + ") has awaken " + Instant.now());
 						Flight newFlight = new Flight(code, state, time) ; //create new flight object 
 						
 						tableOfArrivals_Departures.replace(code, newFlight) ;// replace previous flight's info 
 						
 						return "WOKK" ;
 					}finally {
+						System.out.println("A writer has let write lock on " + code + " " + Instant.now());
 						writelock.unlock();
 					}
 					
@@ -100,11 +112,12 @@ public class ServerProtocol {
 					
 					try {
 						writelock.lock();
-						
+						System.out.println("A writer has taken write lock on " + code + " " + Instant.now());
 						tableOfArrivals_Departures.remove(code);
 						
 						return "WOKK" ;
 					}finally {
+						System.out.println("A writer has let write lock on " + code + " " + Instant.now());
 						writelock.unlock();
 						flights_on_processing.remove(code);
 					}
@@ -122,12 +135,16 @@ public class ServerProtocol {
 					Lock readlock = flights_on_processing.get(code).readLock(); // if flight doesn't exist here we will have null exception
 					
 					try {
-						readlock.lock();
+						readlock.lock();						
+						System.out.println("A reader has taken read lock on " + code + " " + Instant.now());
 						
-						System.out.println("A thread has taken read lock on " + code);
+						System.out.println("A reader with read lock on ("+ code + ") is going to sleep " + Instant.now());
+						Thread.sleep(5000);
+						System.out.println("A reader with read lock on ("+ code + ") has awaken " + Instant.now());
 						Flight f = tableOfArrivals_Departures.get(code) ; 
 						return "ROK " + f.getCode() + ' ' + f.getState() + ' ' + f.getTime()  ;
 					}finally {
+						System.out.println("A reader has let read lock on " + code + " " + Instant.now());
 						readlock.unlock();
 					}
 				}catch (Exception e) {

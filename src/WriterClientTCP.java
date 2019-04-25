@@ -30,25 +30,20 @@ public class WriterClientTCP {
 			int i = 0 ; 
 			while (true) {
 				outmsg = app.prepareRequest("WRITER");
-				
-				/*
-				// code for automation of writer  
-				outmsg = "WRITE 1567 ARRIVAL 15:3" + i ;
-				if (i == 10) outmsg = "EXIT" ; 
-				i++ ;		
-				*/
-				
+			
 				if (outmsg.equals("EXIT")) {
 					outmsg = app.prepareExit();
 					out.println(outmsg);
 					dataSocket.close();
 					break ;
 				}
+				long start = System.currentTimeMillis(); // finding the time before the operation is executed
 				out.println(outmsg);
 				
 				inmsg = in.readLine();
-				
-				app.processReply(inmsg);
+				long end = System.currentTimeMillis(); // finding the time after the operation is executed
+				float sec = (end - start) / 1000F ;  //finding the time difference and converting it into seconds
+				app.processReply(inmsg,sec);
 			}
 		}	
 		catch(IOException WERR) {

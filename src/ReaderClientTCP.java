@@ -24,13 +24,7 @@ public class ReaderClientTCP {
 			int i = 0 ;
 			while (true) {
 				outmsg = app.prepareRequest("READER");
-				
-				/* 
-				// code for automation of reader  
-				outmsg = "READ 1567";
-				if (i==15) outmsg = "EXIT" ; 
-				i++ ;
-				*/
+			
 				
 				if (outmsg.equals("EXIT")) {
 					outmsg = app.prepareExit();
@@ -38,11 +32,13 @@ public class ReaderClientTCP {
 					dataSocket.close();
 					break ;
 				}
+				long start = System.currentTimeMillis(); // finding the time before the operation is executed
 				out.println(outmsg);
 				
 				inmsg = in.readLine();
-				
-				app.processReply(inmsg);
+				long end = System.currentTimeMillis(); // finding the time after the operation is executed
+				float sec = (end - start) / 1000F ;  //finding the time difference and converting it into seconds
+				app.processReply(inmsg,sec);
 		
 					
 			}
