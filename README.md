@@ -229,3 +229,5 @@ Reply: ROK XU1800 ARRIVAL 13:15 received in 5.0 sec
 
 This time reader is not waiting for writer to finish and let his write lock because reader doesn't want his lock ,he wants the read lock of an other flight and he gets it.
 
+**For more information regarding this project please check my comments inside the code .**
+
